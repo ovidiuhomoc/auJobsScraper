@@ -1,4 +1,6 @@
-package com.example.application.entities;
+package com.example.application.services;
+
+import com.example.application.model.Job;
 
 import java.util.List;
 

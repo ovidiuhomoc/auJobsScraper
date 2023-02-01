@@ -1,6 +1,6 @@
-package com.example.application.entities.repositories;
+package com.example.application.model.repositories;
 
-import com.example.application.entities.Job;
+import com.example.application.model.Job;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -137,9 +137,7 @@ public class JobRepository {
     }
 
     public void deleteAll() {
-//        entityManager.getTransaction().begin();
-//        entityManager.createQuery("TRUNCATE TABLE jobsscraping").executeUpdate();
-//        entityManager.getTransaction().commit();
+//        entityManager.createNativeQuery("BEGIN TRUNCATE TABLE jobsscraping END").executeUpdate();
         findAll().forEach(this::delete);
     }
 

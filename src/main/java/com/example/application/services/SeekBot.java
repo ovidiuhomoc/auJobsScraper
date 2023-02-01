@@ -1,5 +1,8 @@
-package com.example.application.entities;
+package com.example.application.services;
 
+import com.example.application.model.Job;
+import com.example.application.model.JobPlatformOrigin;
+import com.example.application.model.ScrapingSettings;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -61,7 +64,7 @@ public class SeekBot implements ScraperBot {
     @Override
     public List<Job> scrapeJobs(int page) {
         try {
-            url = new URL(scrapingSettings.getLink(page));
+            url = new URL(scrapingSettings.getScrapeLink(page));
             connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("User-Agent", selectedUserAgent);
             responseCode = connection.getResponseCode();
@@ -69,7 +72,8 @@ public class SeekBot implements ScraperBot {
             System.out.println("[SeekBot][id " + id + "] User-Agent : " + selectedUserAgent);
             System.out.println("[SeekBot][id " + id + "] Sending 'GET' request to URL : " + url);
             if (responseCode != 200) {
-                throw new RuntimeException("[SeekBot][id " + id + "] Request for page " + page + " failed with response code : " + responseCode);
+                System.out.println("[SeekBot][id " + id + "] Request for page " + page + " failed with response code : " + responseCode);
+                return null;
             }
 
             bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
@@ -87,20 +91,23 @@ public class SeekBot implements ScraperBot {
             e.printStackTrace();
         }
         System.out.println("[SeekBot][id " + id + "] JSON response " + response.toString());
+        if (!response.toString().startsWith("<!DOCTYPE html>    <html>      <head>")) {
+            List<JSONObject> jsonJobs = new ArrayList<>();
+            List<Job> jobs = new ArrayList<>();
 
-        List<JSONObject> jsonJobs = new ArrayList<>();
-        List<Job> jobs = new ArrayList<>();
+            JSONObject mainJsonObject = new JSONObject(response.toString());
+            JSONArray jobsJsonArray = (JSONArray) mainJsonObject.get("data");
 
-        JSONObject mainJsonObject = new JSONObject(response.toString());
-        JSONArray jobsJsonArray = (JSONArray) mainJsonObject.get("data");
-        jobsJsonArray.iterator().forEachRemaining(jsonJob -> {
-            jsonJobs.add((JSONObject) jsonJob);
-        });
+            for (int i = 0; i < jobsJsonArray.length(); i++) {
+                jsonJobs.add((JSONObject) jobsJsonArray.get(i));
+            }
 
-        for (JSONObject jsonJob : jsonJobs) {
-            jobs.add(new Job(JobPlatformOrigin.Seek, jsonJob));
+            for (JSONObject jsonJob : jsonJobs) {
+                jobs.add(new Job(JobPlatformOrigin.Seek, jsonJob));
+            }
+            return jobs;
         }
-        return jobs;
+        return null;
     }
 
     @Override

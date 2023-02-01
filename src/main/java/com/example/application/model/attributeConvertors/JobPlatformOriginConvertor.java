@@ -1,7 +1,6 @@
-package com.example.application.entities.attributeConvertors;
+package com.example.application.model.attributeConvertors;
 
-import com.example.application.entities.JobPlatformOrigin;
-import org.json.JSONObject;
+import com.example.application.model.JobPlatformOrigin;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;

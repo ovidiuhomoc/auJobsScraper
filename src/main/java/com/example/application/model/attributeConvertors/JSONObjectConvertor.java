@@ -1,4 +1,4 @@
-package com.example.application.entities.attributeConvertors;
+package com.example.application.model.attributeConvertors;
 
 import org.json.JSONObject;
 

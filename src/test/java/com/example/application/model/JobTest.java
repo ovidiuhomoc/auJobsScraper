@@ -1,6 +1,6 @@
-package com.example.application.entities;
+package com.example.application.model;
 
-import com.example.application.entities.repositories.JobRepository;
+import com.example.application.model.repositories.JobRepository;
 
 import org.junit.Assert;
 
@@ -35,6 +35,7 @@ public class JobTest {
         System.out.println();
         //restore to DB content
         //
+        jobRepo.deleteAll();
         jobRepo.close();
     }
 

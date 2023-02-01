@@ -1,4 +1,8 @@
-package com.example.application.entities;
+package com.example.application.services;
+
+import com.example.application.model.Job;
+import com.example.application.model.ScrapingSettings;
+import com.example.application.services.ScraperBot;
 
 import java.util.List;
 

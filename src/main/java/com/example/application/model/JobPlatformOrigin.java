@@ -1,4 +1,4 @@
-package com.example.application.entities;
+package com.example.application.model;
 
 public enum JobPlatformOrigin {
     Seek,
